@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Final Celebration</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #ad6df2, #a5dcf8);
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #f6eed6;
+    }
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 15px #fff;
+    }
+    button {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 30px;
+      background: #fff;
+      color: #ff4b5c;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      margin: 10px;
+    }
+    button:hover {
+      background: #ffdde1;
+      color: #fff;
+      box-shadow: 0 0 20px #fff;
+    }
+    #stopMusic {
+      background: #eee;
+      color: #333;
+    }
+    #stopMusic:hover {
+      background: #ccc;
+      color: #000;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎊Once again happy birthday my soulmate ❤️</h1>
+<h2>Thank you for always being with me</h2>
+  <button onclick="startFireworks()">🎆 Celebrate!</button>
+  <button id="stopMusic">⏹ Stop Music</button>
+
+  <audio id="bgMusic" loop>
+    <source src="music/celebration.mp3" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+
+  <canvas id="canvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let music = document.getElementById("bgMusic");
+    const stopBtn = document.getElementById("stopMusic");
+
+    // Resize canvas
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    // Start fireworks on Celebrate
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function createFirework(x, y) {
+      const colors = ['#ff4b5c', '#ffd700', '#00ffcc', '#ff00ff', '#ff6f61', '#00c3ff', '#4caf50', '#ff5722'];
+      for (let i = 0; i < 80; i++) {
+        particles.push({
+          x: x,
+          y: y,
+          angle: random(0, 2 * Math.PI),
+          speed: random(2, 8),
+          radius: random(2, 4),
+          life: 100,
+          color: colors[Math.floor(random(0, colors.length))]
+        });
+      }
+    }
+
+    function updateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p, i) => {
+        p.x += Math.cos(p.angle) * p.speed;
+        p.y += Math.sin(p.angle) * p.speed;
+        p.life--;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        if (p.life <= 0) particles.splice(i, 1);
+      });
+    }
+
+    function loop() {
+      updateParticles();
+      requestAnimationFrame(loop);
+    }
+
+    function startFireworks() {
+      if(music.paused) music.play();
+      setInterval(() => {
+        createFirework(random(100, canvas.width - 100), random(100, canvas.height - 100));
+      }, 300);
+      loop();
+    }
+
+    stopBtn.addEventListener("click", () => {
+      music.pause();
+    });
+
+    // Auto play music once loaded
+    window.onload = () => {
+      music.play().catch(e => console.log("Autoplay blocked"));
+    };
+  </script>
+
+</body>
+</html>

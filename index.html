@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Surprise</title>
+  <!-- Stylish Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #99b5ec, #bbe0f3);
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+    .login-box {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      transition: 0.4s;
+    }
+    .login-box:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    }
+    .login-box h2 {
+      color: #fff;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    .login-box input {
+      width: 80%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+    .login-box input:focus {
+      box-shadow: 0 0 8px #fff;
+    }
+    .login-box button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(45deg, #ff512f, #dd2476);
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.4s;
+    }
+    .login-box button:hover {
+      background: linear-gradient(45deg, #465cecf5, #1e0ed1e2);
+      transform: scale(1.1);
+    }
+    /* Message style */
+    .message {
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      display: none;
+      animation: fadeIn 2s ease-in-out forwards;
+    }
+    .message h1 {
+      font-size: 50px;
+      font-family: 'Great Vibes', cursive;
+      text-shadow: 0 0 15px #fe4148, 0 0 25px #75abfb, 0 0 40px #fea1a1;
+      white-space: nowrap; /* ek line me rakhega */
+    }
+    .message p {
+      font-size: 18px;
+      margin-top: 10px;
+      color: rgb(235, 99, 208);
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.5); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    /* Fireworks canvas */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /* Link button */
+    .link-btn {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 35px;
+      border-radius: 30px;
+      background: linear-gradient(45deg, #43e97b, #38f9d7);
+      color: #000;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 16px;
+      transition: 0.4s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .link-btn:hover {
+      background: linear-gradient(45deg, #fc6076, #ff9a44);
+      color: #fff;
+      transform: scale(1.1) rotate(-1deg);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+  </style>
+  <script>
+  if (!window.openedMusic) {
+    window.open("music.html", "musicPlayer", "width=200,height=100");
+    window.openedMusic = true;
+  }
+</script>
+</head>
+<body>
+  <div class="login-box" id="loginBox">
+    <h2>🎉 Birthday Surprise 🎉</h2>
+    <input type="text" placeholder="Enter your name" id="name">
+    <input type="text" placeholder="Enter your DOB (dd-mm-yyyy)" id="dob">
+    <br>
+    <button onclick="showSurprise()">Submit</button>
+  </div>
+
+  <div class="message" id="message">
+    <h1>✨ Happy Birthday Meri Jaan ✨</h1>
+    <p>💖 This is just a beginning of surprise 💖</p>
+    <a href="next.html" class="link-btn">Suprise ➝</a>
+  </div>
+
+  <canvas id="fireworks"></canvas>
+
+  <script>
+    const canvas = document.getElementById('fireworks');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+    let confetti = [];
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.radius = Math.random() * 3 + 2;
+        this.angle = Math.random() * 2 * Math.PI;
+        this.speed = Math.random() * 6 + 2;
+        this.life = 100;
+      }
+      update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+        this.life--;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    class Confetti {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.size = Math.random() * 6 + 4;
+        this.angle = Math.random() * 2 * Math.PI;
+        this.speedY = Math.random() * 3 + 2;
+        this.rotation = Math.random() * 360;
+      }
+      update() {
+        this.y += this.speedY;
+        this.rotation += 5;
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation * Math.PI / 180);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+        ctx.restore();
+      }
+    }
+
+    function fireworks(x, y) {
+      const colors = ['#ff4b1f', '#1fddff', '#f9d423', '#fc00ff', '#00dbde'];
+      for (let i = 0; i < 50; i++) {
+        particles.push(new Particle(x, y, colors[Math.floor(Math.random() * colors.length)]));
+      }
+    }
+
+    function createConfetti() {
+      const colors = ['#ff4b1f', '#1fddff', '#f9d423', '#24c6dc', '#ff00c8'];
+      for (let i = 0; i < 10; i++) {
+        confetti.push(new Confetti(Math.random() * canvas.width, -10, colors[Math.floor(Math.random() * colors.length)]));
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p, i) => {
+        p.update();
+        p.draw();
+        if (p.life <= 0) particles.splice(i, 1);
+      });
+
+      confetti.forEach((c, i) => {
+        c.update();
+        c.draw();
+        if (c.y > canvas.height) confetti.splice(i, 1);
+      });
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    function showSurprise() {
+      document.getElementById("loginBox").style.display = "none";
+      document.getElementById("message").style.display = "block";
+      setInterval(() => {
+        fireworks(Math.random() * canvas.width, Math.random() * canvas.height);
+        createConfetti();
+      }, 600);
+    }
+  </script>
+   
+   <audio id="bgMusic" loop autoplay muted>
+    <source src="Tujh Mein Rab Dikhta Hai-(SambalpuriStar.In).mp3" type="audio/mpeg" />
+    Your browser does not support the audio element.
+</audio>
+
+<button id="playButton" onclick="playMusic()" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 20px;">
+    Play Music
+</button>
+
+<script>
+    window.addEventListener('load', () => {
+        const music = document.getElementById('bgMusic');
+        music.play().catch(err => {
+            console.log("Autoplay blocked by browser.");
+        });
+    });
+
+    function playMusic() {
+        const music = document.getElementById('bgMusic');
+        music.muted = false;
+        music.play();
+        document.getElementById('playButton').style.display = 'none';
+    }
+</script>
+</body>
+</html>

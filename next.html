@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Gallery with Slideshow</title>
+  <style>
+   
+    body {
+      margin: 0;
+      font-family: Arial, Impact, Haettenschweiler, 'Arial Narrow Bold',;
+      background: #0f0f0f;
+      color: white;
+      text-align: center;
+    }
+    h1 {
+      margin: 20px;
+      font-size: 2rem;
+    }
+
+    /* Photo Gallery Grid */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .gallery img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(255,255,255,0.2);
+      transition: transform 0.3s ease;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Slideshow */
+    .slideshow {
+      position: relative;
+      max-width: 700px;
+      height: 400px;
+      margin: 40px auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(255,255,255,0.3);
+    }
+    .slideshow img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .slideshow img.active {
+      opacity: 1;
+    }
+
+    /* Modern Button */
+    .reveal-btn {
+      display: inline-block;
+      margin: 30px auto;
+      padding: 14px 40px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(45deg, #ff00cc, #3333ff);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .reveal-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: skewX(-45deg);
+      transition: left 0.5s ease;
+    }
+
+    .reveal-btn:hover::before {
+      left: 200%;
+    }
+
+    .reveal-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(255, 0, 204, 0.8), 0 0 30px rgba(51, 51, 255, 0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>✨Aap aur Mai="Hum" ✨</h1>
+  <!-- Photo Gallery -->
+  <div class="gallery">
+    <img src="IMG-20241202-WA0114.jpg" alt="Photo 1">
+    <img src="IMG-20241202-WA0143.jpg" alt="Photo 2">
+    <img src="IMG-20241202-WA0173.jpg" alt="Photo 3">
+    <img src="IMG-20250109-WA0002.jpg" alt="Photo 4">
+    <img src="IMG-20250109-WA0006.jpg" alt="Photo 5">
+    <img src="IMG_20250313_151840_411.jpg" alt="Photo 6">
+    <img src="IMG_20241008_14590874.jpg" alt="Photo 7">
+    <img src="IMG20250214105752.jpg" alt="Photo 8">
+    <img src="1733193458959.jpg" alt="Photo 9">
+  </div>
+
+  <!-- Slideshow -->
+  <div class="slideshow">
+    <img src="IMG-20241202-WA0114.jpg" class="active">
+    <img src="IMG-20250109-WA0006.jpg">
+    
+    <img src="IMG20250214105752.jpg">
+    <img src="IMG-20250109-WA0002.jpg">
+    <img src="IMG_20250313_151840_411.jpg">
+    <img src="1733193458959.jpg">
+   
+    <img src="IMG-20241202-WA0143.jpg">
+
+  </div>
+
+  <!-- Hidden Background Music -->
+  <audio autoplay loop hidden>
+    <source src="song.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Tap to Reveal Button -->
+  <a href="nextpage.html" class="reveal-btn">✨ Tap to Reveal ✨</a>
+
+  <script>
+    let slides = document.querySelectorAll(".slideshow img");
+    let index = 0;
+
+    setInterval(() => {
+      slides[index].classList.remove("active");
+      index = (index + 1) % slides.length;
+      slides[index].classList.add("active");
+    }, 3000);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Kuch kahna hai aapse</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffe6e6, #fff0f5);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            position: relative;
+            max-width: 90%;
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3em;
+            color: #ff4d6d;
+            margin-bottom: 20px;
+        }
+
+        .note-button:hover {
+            font-size: 1.1em;
+            color: #333;
+            line-height: 1.5;
+            background: #de0ea69a;
+            padding: 15px;
+            border: 2px solid #2c96e7;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+            white-space: pre-wrap;
+            cursor: pointer;
+            hover:
+        }
+
+        .note[contenteditable="true"] {
+            border-color: #ff80ab;
+            background: #fff0f5;
+        }
+
+        .next-button {
+            margin-top: 20px;
+            padding: 10px 25px;
+            font-size: 1.1em;
+            color: white;
+            background: linear-gradient(45deg, #ff4d6d, #ff80ab);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .next-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 20px rgba(219, 77, 255, 0.827);
+        }
+
+        .hearts {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: red;
+            transform: rotate(45deg);
+            animation: fall 4s linear infinite;
+            opacity: 0.8;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: red;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: 10px;
+            top: 0;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(600px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Kuch kehna hai aapse!!!!</h1>
+        
+        <!-- Editable Note -->
+        <div class="note" id="note" contenteditable="true" title="Click to edit">
+Aap meri life ka sabse khaas hissa ho💓😘
+Aapke sath har pal sukoon se bhara hota hai🫂😌❤️‍🩹
+Aaj k din ka bahot dino se intezar tha mujhe Jaan 🫂💓
+Aur aaj phli baar ham dono birthday pe sath hai 🥹🥳🫠 aap soch nhi sakte hai mai kitni khush hu mujhe hamesha aapk sath aapko bahon me rahna 🙂‍↕️🌸🧿Haa manti hu ki kabhi kabhi gussa ho jati hu,kabhi naraz, chaliye aaj aapka birthday hai to sirf aaj ke liye ye bhi man leti hu Thodi pagal hu chijo ko samjhti nhi 😕😁Bas chapar-chapar bolti hu 👀🫠Par jaan pata hai aapko kyu,kyuki jitna comfort aur pyar aapse milta h utna kissi aur se nhi,aur mai ye bhi janti hu sb chodke chale jayenge pr aap nhi jayenge kabhi🥹🫶🏻😘
+Par jaan ye jante hue bhi aapko khone ka dar laga rhta h 😶🩷Mai har pal aapke sath jeena chahti hu 🤌🏻👩‍❤️‍👨 apna har sapna aapk sath pura karna chahti hu bucchu🧿🫶🏻
+Aap meri himmat ho,Bhagwan se mujhe mila hua sabse anmol ashirwad 🫂🌎💫
+Ashirwad se yaad yaha jldi se mujhse shadi krke mujhe Mishra se pandey banaeye🤭😁 fir hm dono mill ke sabke ashirwad lenge🌝🫣<br>
+<br>
+Bucchu arz kiya hai 💫😁
+"Aap jo mil jaate ho to waqt thahar sa jaata hai,
+Har dard, har gham jaane kahaan kho jaata hai,
+Bas aapki aankhon mein doob ke reh jaane ko ji chahta hai,
+Jaise saara jahaan wahin bas aap mein simat jaata hai.”<br>
+<br>Bht mehant lagi h banane me agr galti se bhi aapke muh se ye nikla ki "Bucchi accha na h" to jante h n aap kya hoga aapke sath😈👊🏻💀<br>
+
+Love you so much jaan even you couldn't imagine 🫂💓🧿 
+        </div>
+
+        <button class="next-button" onclick="nextPage()">Next Page</button>
+        
+        <div class="hearts" id="heartsContainer"></div>
+    </div>
+
+    <script>
+        // Heart animation
+        const heartsContainer = document.getElementById('heartsContainer');
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'px';
+            heart.style.animationDuration = (2 + Math.random() * 3) + 's';
+            heartsContainer.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+
+        setInterval(createHeart, 300);
+
+        // Editable note with local storage
+        const note = document.getElementById('note');
+
+        window.onload = function() {
+            const savedNote = localStorage.getItem('userNote');
+            if(savedNote) {
+                note.innerHTML = savedNote;
+            }
+        }
+
+        note.addEventListener('input', () => {
+            localStorage.setItem('userNote', note.innerHTML);
+        });
+
+        // Next page functionality
+        function nextPage() {
+            // Yahan apna dusre page ka link dalen
+            window.location = "bucchu.html";  // example: replace with your actual page
+        }
+    </script>
+
+</body>
+</html>
